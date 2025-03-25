@@ -1,0 +1,38 @@
+<%= render "home/navbar"%>
+
+<%= form_with(model: @cryptocurrency, local: true) do |f| %>
+  <div class="field">
+    <%= f.label :name, "Nome da Criptomoeda*" %><br />
+    <%= f.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :company, "Empresa/Organização*" %><br />
+    <%= f.text_field :company, class: "form-control", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :value, "Valor (USD)*" %><br />
+    <%= f.number_field :value, step: 0.000001, class: "form-control", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :photo, "Imagem da Criptomoeda*" %><br />
+    <% if @cryptocurrency.photo.attached? %>
+      <%= image_tag @cryptocurrency.photo, width: 100 %><br />
+      <small>Imagem atual</small><br />
+    <% end %>
+    <%= f.file_field :photo, accept: "image/png, image/jpg, image/jpeg", class: "form-control", required: !@cryptocurrency.photo.attached? %>
+    <small class="text-muted">Formatos aceitos: PNG, JPG, JPEG</small>
+  </div>
+
+  <div class="field">
+    <%= f.label :description, "Descrição" %><br />
+    <%= f.text_area :description, class: "form-control", rows: 3 %>
+  </div>
+
+  <div class="actions mt-3">
+    <%= f.submit @cryptocurrency.persisted? ? "Atualizar Criptomoeda" : "Cadastrar Criptomoeda", class: "btn btn-primary" %>
+    <%= link_to "Cancelar", cryptocurrencies_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>

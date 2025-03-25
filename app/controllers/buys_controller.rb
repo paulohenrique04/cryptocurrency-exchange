@@ -22,6 +22,7 @@ class BuysController < ApplicationController
       redirect_to purchases_path, notice: 'Compra realizada com sucesso!'
     else 
       redirect_to @cryptocurrency, alert: 'Saldo insuficiente!'
+    end
   end
 
   def set_cryptocurrency

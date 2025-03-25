@@ -7,6 +7,7 @@ class CryptocurrenciesController < ApplicationController
   end
 
   def show
+    @cryptocurrency = Cryptocurrency.find(params[:id])
   end
 
   def new
@@ -16,7 +17,7 @@ class CryptocurrenciesController < ApplicationController
   def create
     @cryptocurrency = Cryptocurrency.new(cryptocurrency_params)
     if @cryptocurrency.save 
-      redirect_to @cryptocurrency, notice: 'Criptomoeda criada com sucesso'
+      redirect_to root_path, notice: 'Criptomoeda criada com sucesso'
     else 
       render :new
     end

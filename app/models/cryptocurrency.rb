@@ -3,7 +3,19 @@ class Cryptocurrency < ApplicationRecord
   
   validates :name, :company, :value, presence: true
   validates :value, numericality: { greater_than: 0 }
-  validates :photo, attached: true, content_type: ['image/png', 'image/jpg', 'image/jpeg']
+  
+  validates :photo, presence: true
+  validate :acceptable_image
 
   has_many :buys
+
+  private 
+
+  def acceptable_image
+    return unless photo.attached?
+
+    unless photo.content_type.in?(%w[image/png image/jpg image/jpeg])
+      errors.add(:photo, "deve ser um arquivo PNG, JPG ou JPEG.")
+    end
+  end
 end

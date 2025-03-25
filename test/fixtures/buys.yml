@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  cryptocurrency: one
+  quantity: 9.99
+  crypto_value: 9.99
+
+two:
+  user: two
+  cryptocurrency: two
+  quantity: 9.99
+  crypto_value: 9.99

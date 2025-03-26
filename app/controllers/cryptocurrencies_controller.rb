@@ -27,17 +27,16 @@ class CryptocurrenciesController < ApplicationController
   end
 
   def update
-    @cryptocurrency = Cryptocurrency.new(cryptocurrency_params)
-    if @cryptocurrency.save 
-      redirect_to @cryptocurrency, notice: 'Criptomoeda atualizada com sucesso'
-    else 
+    if @cryptocurrency.update(cryptocurrency_params)
+      redirect_to @cryptocurrency, notice: "Criptomoeda atualizada com sucesso!"
+    else
       render :edit
     end
   end
 
   def destroy
     @cryptocurrency.destroy
-    redirect_to cryptocurrencies_url, notice: 'Criptomoeda removida com sucesso'
+    redirect_to root_path, notice: 'Criptomoeda removida com sucesso'
   end
 
   private

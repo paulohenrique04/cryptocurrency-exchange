@@ -26,11 +26,11 @@
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Saldo: <%= number_to_currency(current_user.balance) %>
+                      Saldo: <%= number_to_currency(current_user.balance, unit: "R$ ", separator: ",", delimiter: ".") %>
                     </span>
                 </li>
                 <li class="nav-item">
-                    <%= button_to 'Sair', destroy_user_session_path, method: :delete, class: "nav-link"%>
+                    <%= button_to 'Sair', destroy_user_session_path, method: :delete, class: "btn btn-outline-danger nav-link text-danger px-3"%>
                 </li>
                 <% else %>
                 <li class="nav-item">
@@ -45,3 +45,15 @@
       </div>
     </div>
   </nav>
+
+  <% if flash[:notice] %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= flash[:notice] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% elsif flash[:alert] %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <%= flash[:alert] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>

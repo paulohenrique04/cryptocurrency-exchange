@@ -6,7 +6,7 @@
     <div class="card mb-4">
       <div class="card-body">
         <h2 class="card-title">Carteira de <%= current_user.name %></h2>
-        <p class="card-text">Saldo total: <strong><%= number_to_currency(current_user.balance) %></strong></p>
+        <p class="card-text">Saldo total: <strong><%= number_to_currency(current_user.balance, unit: "R$ ", separator: ",", delimiter: ".") %></strong></p>
       </div>
     </div>
 
@@ -27,7 +27,7 @@
             <tr>
               <td><%= purchase.cryptocurrency.name %></td>
               <td><%= purchase.quantity %></td>
-              <td><%= number_to_currency(purchase.crypto_value) %></td>
+              <td><%= number_to_currency(purchase.crypto_value, unit: "R$ ", separator: ",", delimiter: ".") %></td>
               <td><%= l(purchase.created_at, format: :short) %></td>
             </tr>
           <% end %>

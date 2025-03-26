@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :balance, numericality: { greater_than_or_equal_to: 0 }
 
   has_one :wallet, dependent: :destroy
-  has_many :buys, through: :wallet
+  has_many :buys
 
   after_create :create_wallet
 

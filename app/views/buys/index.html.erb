@@ -1,2 +1,40 @@
-<h1>Buys#index</h1>
-<p>Find me in app/views/buys/index.html.erb</p>
+<%= render "home/navbar" %>
+
+<div class="container mt-5">
+  <h1>Minhas Compras</h1>
+  
+  <% if @buys.any? %>
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Criptomoeda</th>
+          <th>Quantidade</th>
+          <th>Valor Unitário</th>
+          <th>Valor Total</th>
+          <th>Data da Compra</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @buys.each do |buy| %>
+          <tr>
+            <td>
+              <%= link_to buy.cryptocurrency.name, cryptocurrency_path(buy.cryptocurrency) %>
+            </td>
+            <td><%= buy.quantity %></td>
+            <td><%= number_to_currency(buy.cryptocurrency.value, unit: "R$ ") %></td>
+            <td><%= number_to_currency(buy.crypto_value, unit: "R$ ") %></td>
+            <td><%= l(buy.created_at, format: :short) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="alert alert-warning">
+      <strong>Você ainda não realizou nenhuma compra.</strong>
+    </div>
+  <% end %>
+
+  <div class="mt-4">
+    <%= link_to 'Voltar', cryptocurrencies_path, class: 'btn btn-secondary' %>
+  </div>
+</div>

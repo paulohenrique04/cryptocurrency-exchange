@@ -1,5 +1,5 @@
 class CryptocurrenciesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show]
   before_action :set_cryptocurrency, only: [:show, :edit, :update, :destroy]
 
   def index

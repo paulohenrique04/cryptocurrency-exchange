@@ -31,7 +31,8 @@
           <h3>Comprar </h3>
         </div>
         <div class="card-body">
-          <%= form_with url: buys_path(@cryptocurrency), method: :post do |f| %>
+          <%= form_with model: Buy.new, url: buys_path, method: :post do |f| %>
+          <%= hidden_field_tag :cryptocurrency_id, @cryptocurrency.id %>
             <div class="form-group">
               <%= f.label :quantity, 'Quantidade' %>
               <%= f.number_field :quantity, 

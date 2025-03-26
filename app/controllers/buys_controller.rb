@@ -1,31 +1,40 @@
 class BuysController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_cryptocurrency, only: [:create]
 
   def index
     @buys = current_user.buys.includes(:cryptocurrency)
   end
 
   def create
-    quantity = params[:quantity].to_f
-    total_value = quantity * @cryptocurrency.value
+    cryptocurrency = Cryptocurrency.find(params[:cryptocurrency_id])
+    total_value = cryptocurrency.value * buy_params[:quantity].to_f
 
-    if current_user.balance >= total_value
-      ActiveRecord::Base.transaction do
-        current_user.update!(balance: current_user.balance - total_value)
-        current_user.wallet.purchases.create!(
-          cryptocurrency: @cryptocurrency,
-          quantity: quantity,
-          crypto_value: @cryptocurrency.value
-        )
-      end
-      redirect_to purchases_path, notice: 'Compra realizada com sucesso!'
-    else 
-      redirect_to @cryptocurrency, alert: 'Saldo insuficiente!'
+    if current_user.balance < total_value
+      redirect_to cryptocurrency_path(cryptocurrency), alert: 'Saldo insuficiente para realizar a compra.'
+      return
     end
+
+    @buy = current_user.buys.build(
+      cryptocurrency_id: cryptocurrency.id,
+      quantity: buy_params[:quantity],
+      crypto_value: total_value
+    )
+
+    ActiveRecord::Base.transaction do
+      if @buy.save
+        current_user.update!(balance: current_user.balance - total_value)
+        redirect_to cryptocurrency_path(cryptocurrency), notice: 'Compra realizada com sucesso!'
+      else
+        redirect_to cryptocurrency_path(cryptocurrency), alert: 'Erro ao realizar a compra.'
+      end
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to cryptocurrency_path(cryptocurrency), alert: "Erro ao realizar a compra: #{e.message}"
   end
 
-  def set_cryptocurrency
-    @cryptocurrency = Cryptocurrency.find(params[:cryptocurrency_id])
+  private 
+
+  def buy_params
+    params.require(:buy).permit(:quantity)
   end
 end

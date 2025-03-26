@@ -1,0 +1,46 @@
+<%= render "home/navbar" %>
+<div class="container mt-4">
+  <h1 class="mb-4">Minha Carteira</h1>
+
+  <% if current_user %>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title">Carteira de <%= current_user.name %></h2>
+        <p class="card-text">Saldo total: <strong><%= number_to_currency(current_user.balance) %></strong></p>
+      </div>
+    </div>
+
+    <h2 class="mb-3">Minhas Compras</h2>
+
+    <% if current_user.buys.any? %>
+      <table class="table table-striped table-hover mt-3">
+        <thead class="thead-dark">
+          <tr>
+            <th>Criptomoeda</th>
+            <th>Quantidade</th>
+            <th>Preço de Compra</th>
+            <th>Data de Compra</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% current_user.buys.each do |purchase| %>
+            <tr>
+              <td><%= purchase.cryptocurrency.name %></td>
+              <td><%= purchase.quantity %></td>
+              <td><%= number_to_currency(purchase.crypto_value) %></td>
+              <td><%= l(purchase.created_at, format: :short) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="alert alert-warning" role="alert">
+        Você ainda não realizou nenhuma compra.
+      </div>
+    <% end %>
+  <% else %>
+    <div class="alert alert-info" role="alert">
+      Você ainda não possui uma carteira configurada.
+    </div>
+  <% end %>
+</div>

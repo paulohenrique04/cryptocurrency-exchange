@@ -7,7 +7,7 @@ class Cryptocurrency < ApplicationRecord
   validates :photo, presence: true
   validate :acceptable_image
 
-  has_many :buys
+  has_many :buys, dependent: :destroy
 
   private 
 
